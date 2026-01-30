@@ -1,5 +1,39 @@
-<script setup lang="ts">
+<script setup>
+import { isNullishCoalesce } from 'typescript';
 import GameGround from './components/GameGround.vue'
+import { ref } from 'vue';
+let count = ref(10);
+const first = count.value;
+let timeoutNum = count.value * 1000;
+let intervalId;
+let isGamePlaying = false;
+// スタートを押していない状態のとき
+
+// スタートを押した時→タイマーをスタートさせる
+function startCount() {
+  if (isGamePlaying === false) {
+    isGamePlaying = true;
+  }
+  console.log(isGamePlaying);
+  intervalId ??= setInterval(decreaceCount, 1000);
+}
+
+function decreaceCount() {
+  count.value = count.value - 1;
+  console.log(count);
+
+  if (count.value <= 0){
+    console.log("終了");
+    isGamePlaying = false;
+    clearInterval(intervalId);
+  };
+
+  return count;
+}
+
+
+
+// リセットを押した時→タイマーを押していない状態の時に戻す
 </script>
 
 <template>
@@ -8,12 +42,18 @@ import GameGround from './components/GameGround.vue'
   </div>
   <div class="main-content">
     <div class="game-area">
-      <GameGround/>
+      <!-- 双方向の受け渡しにはv-model！ -->
+      <GameGround v-model:time="count" :isGamePlaying="isGamePlaying"/>
     </div>
     <div class="game-setting">
-      <div class="setting-btn">
-        <button class="btn">START</button>
-        <button class="btn">RESTART</button>
+      <div v-if="count==first||count==0" class="setting-btn">
+        <button class="btn" @click="startCount()">START</button>
+        <button class="btn">RESET</button>
+      </div>
+      <!-- ゲーム中は押下できない -->
+      <div v-else="count==first" class="setting-btn">
+        <button class="btn" :disabled="true">START</button>
+        <button class="btn">RESET</button>
       </div>
     </div>
   </div>
@@ -35,7 +75,7 @@ import GameGround from './components/GameGround.vue'
 
 .main-content {
   width: auto;
-  height: 88vh;
+  height: auto;
   background-color: rgb(255, 228, 194);
   padding-top: 30px;
 }
@@ -52,13 +92,14 @@ import GameGround from './components/GameGround.vue'
 .game-setting {
   padding-top: 20px;
   text-align: center;
+  padding-bottom: 30px;
 }
 
 .btn {
   height: 80px;
   width: 200px;
   font-size: 40px;
-  font-family: 'Impact';
+  font-family: Tahoma;
   font-weight: bold;
   margin: 0 20px;
   color: white;
@@ -71,5 +112,12 @@ import GameGround from './components/GameGround.vue'
   transform: translateY(4px);
   box-shadow: none;
   background-color: rgb(83, 56, 2);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: translateY(4px);
+  box-shadow: none;
+  background-color: rgb(109, 74, 3);
 }
 </style>

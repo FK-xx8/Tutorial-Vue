@@ -2,9 +2,11 @@
 import { ref } from 'vue'
 import Hole from './Hole.vue'
 
+defineProps<{ time: any, isGamePlaying: boolean }>()
 const score = ref(0);
-const time = ref("00");
 const holes = ref([1,2,3,4,5]);
+
+
 </script>
 
 <template>
@@ -14,7 +16,7 @@ const holes = ref([1,2,3,4,5]);
       <br>
       <a>SCORE: {{ score }}</a>
     </div>
-    <div class="holes">
+    <div v-if="isGamePlaying" class="holes">
       <!-- 繰り返して表示 -->
         <Hole v-for="hole in holes" num=""/>
     </div>
@@ -32,7 +34,7 @@ const holes = ref([1,2,3,4,5]);
   text-align: left;
   color: black;
   padding: 5px 0 0 5px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Tahoma;
   font-size: 2em;
   font-weight: bold;
   background-color: white;
