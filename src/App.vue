@@ -3,13 +3,11 @@ import { isNullishCoalesce } from 'typescript';
 import GameGround from './components/GameGround.vue'
 import { ref } from 'vue';
 let count = ref(10);
-const first = count.value;
-let timeoutNum = count.value * 1000;
 let intervalId;
 let isGamePlaying = false;
-// スタートを押していない状態のとき
+let level = ref(1);
 
-// スタートを押した時→タイマーをスタートさせる
+// カウントが開始
 function startCount() {
   if (isGamePlaying === false) {
     isGamePlaying = true;
@@ -31,9 +29,8 @@ function decreaceCount() {
   return count;
 }
 
+// リセットは、タイマーを戻すことで実現可能？
 
-
-// リセットを押した時→タイマーを押していない状態の時に戻す
 </script>
 
 <template>
@@ -43,17 +40,23 @@ function decreaceCount() {
   <div class="main-content">
     <div class="game-area">
       <!-- 双方向の受け渡しにはv-model！ -->
-      <GameGround v-model:time="count" :isGamePlaying="isGamePlaying"/>
+      <GameGround v-model:time="count" :isGamePlaying="isGamePlaying" :level="level"/>
     </div>
     <div class="game-setting">
-      <div v-if="count==first||count==0" class="setting-btn">
+      <div v-if="!isGamePlaying" class="setting-btn">
         <button class="btn" @click="startCount()">START</button>
         <button class="btn">RESET</button>
       </div>
       <!-- ゲーム中は押下できない -->
-      <div v-else="count==first" class="setting-btn">
+      <div v-else="isGamePlaying" class="setting-btn">
         <button class="btn" :disabled="true">START</button>
         <button class="btn">RESET</button>
+      </div>
+      <div v-if="!isGamePlaying">
+        <p>難易度：LEVEL.{{ level }}</p>
+        <button class="btn green" @click="level = 1">level.1</button>
+        <button class="btn blue" @click="level = 2">level.2</button>
+        <button class="btn red" @click="level = 3">level.3</button>
       </div>
     </div>
   </div>
@@ -119,5 +122,43 @@ function decreaceCount() {
   transform: translateY(4px);
   box-shadow: none;
   background-color: rgb(109, 74, 3);
+}
+
+.game-setting p {
+  margin-top: 20px;
+  font-family: Tahoma;
+  font-size: 2em;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  background-color: rgb(211, 145, 14);
+}
+
+.green {
+  background-color: rgb(3, 109, 21);
+  box-shadow: 0 4px 0 rgb(4, 82, 17);
+
+}
+.green:hover {
+  background-color: rgb(4, 82, 17);
+}
+
+.blue {
+  background-color: rgb(58, 64, 148);
+  box-shadow: 0 4px 0 rgb(41, 46, 112);
+
+}
+.blue:hover {
+  background-color: rgb(41, 46, 112);
+}
+
+.red {
+  background-color: rgb(151, 47, 47);
+  box-shadow: 0 4px 0 rgb(99, 22, 22);
+
+}
+.red:hover {
+  background-color: rgb(99, 22, 22);
 }
 </style>

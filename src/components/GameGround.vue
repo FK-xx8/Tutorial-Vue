@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import Hole from './Hole.vue'
 
-defineProps<{ time: any, isGamePlaying: boolean }>()
+defineProps<{ time: any, isGamePlaying: boolean, level: number }>()
 const score = ref(0);
 const holes = ref([1,2,3,4,5]);
 
@@ -12,6 +12,8 @@ const holes = ref([1,2,3,4,5]);
 <template>
   <div class="game-bg">
     <div class="game-header">
+      <a>LEVEL: {{ level }}</a>
+      <br>
       <a>TIME: {{ time }}s</a>
       <br>
       <a>SCORE: {{ score }}</a>
