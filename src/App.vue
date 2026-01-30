@@ -12,13 +12,12 @@ function startCount() {
   if (isGamePlaying === false) {
     isGamePlaying = true;
   }
-  console.log(isGamePlaying);
+  console.log("開始");
   intervalId ??= setInterval(decreaceCount, 1000);
 }
 
 function decreaceCount() {
   count.value = count.value - 1;
-  console.log(count);
 
   if (count.value <= 0){
     isGamePlaying = false;
@@ -28,6 +27,14 @@ function decreaceCount() {
   };
 
   return count;
+}
+
+function resetGame() {
+  clearInterval(intervalId);
+  intervalId = null;
+  changeLevel(level.value);
+  isGamePlaying = false;
+  console.log("ゲームがリセットされました");
 }
 
 // レベルを変えると同時にゲーム時間も変える
@@ -45,7 +52,6 @@ function changeLevel(e){
       break;
   }
 }
-// リセットは、タイマーを戻すことで実現可能？
 
 </script>
 
@@ -59,14 +65,11 @@ function changeLevel(e){
       <GameGround v-model:time="count" :isGamePlaying="isGamePlaying" :level="level"/>
     </div>
     <div class="game-setting">
-      <div v-if="!isGamePlaying" class="setting-btn">
-        <button class="btn" @click="startCount()">START</button>
-        <button class="btn">RESET</button>
-      </div>
+      <div  class="setting-btn">
+        <button v-if="!isGamePlaying" class="btn" @click="startCount()">START</button>
       <!-- ゲーム中は押下できない -->
-      <div v-else="isGamePlaying" class="setting-btn">
-        <button class="btn" :disabled="true">START</button>
-        <button class="btn">RESET</button>
+        <button v-else="isGamePlaying" class="btn" :disabled="true">START</button>
+        <button class="btn" @click="resetGame()">RESET</button>
       </div>
       <div v-if="!isGamePlaying">
         <p>難易度：LEVEL.{{ level }}</p>
@@ -94,7 +97,7 @@ function changeLevel(e){
 
 .main-content {
   width: auto;
-  height: auto;
+  height: 100vh;
   background-color: rgb(255, 228, 194);
   padding-top: 30px;
 }
