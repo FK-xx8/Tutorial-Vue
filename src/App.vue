@@ -2,7 +2,7 @@
 import { isNullishCoalesce } from 'typescript';
 import GameGround from './components/GameGround.vue'
 import { ref } from 'vue';
-let count = ref(10);
+let count = ref(60);
 let intervalId;
 let isGamePlaying = false;
 let level = ref(1);
@@ -21,14 +21,30 @@ function decreaceCount() {
   console.log(count);
 
   if (count.value <= 0){
-    console.log("終了");
     isGamePlaying = false;
     clearInterval(intervalId);
+    intervalId = null;
+    console.log("終了");
   };
 
   return count;
 }
 
+// レベルを変えると同時にゲーム時間も変える
+function changeLevel(e){
+  level.value = e;
+  switch (level.value) {
+    case 1:
+      count.value = 60;
+      break;
+    case 2:
+      count.value = 40;
+      break;
+    case 3:
+      count.value = 20;
+      break;
+  }
+}
 // リセットは、タイマーを戻すことで実現可能？
 
 </script>
@@ -54,9 +70,9 @@ function decreaceCount() {
       </div>
       <div v-if="!isGamePlaying">
         <p>難易度：LEVEL.{{ level }}</p>
-        <button class="btn green" @click="level = 1">level.1</button>
-        <button class="btn blue" @click="level = 2">level.2</button>
-        <button class="btn red" @click="level = 3">level.3</button>
+        <button class="btn green" @click="changeLevel(1)">level.1</button>
+        <button class="btn blue" @click="changeLevel(2)">level.2</button>
+        <button class="btn red" @click="changeLevel(3)">level.3</button>
       </div>
     </div>
   </div>
