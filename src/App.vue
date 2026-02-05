@@ -67,9 +67,7 @@ function changeLevel(e){
     <div class="game-setting">
       <div  class="setting-btn">
         <button v-if="!isGamePlaying" class="btn" @click="startCount()">START</button>
-      <!-- ゲーム中は押下できない -->
-        <button v-else="isGamePlaying" class="btn" :disabled="true">START</button>
-        <button class="btn" @click="resetGame()">RESET</button>
+        <button v-else="isGamePlaying" class="btn" @click="resetGame()">RESET</button>
       </div>
       <div v-if="!isGamePlaying">
         <p>難易度：LEVEL.{{ level }}</p>
@@ -97,7 +95,7 @@ function changeLevel(e){
 
 .main-content {
   width: auto;
-  height: 100vh;
+  height: auto;
   background-color: rgb(255, 228, 194);
   padding-top: 30px;
 }
