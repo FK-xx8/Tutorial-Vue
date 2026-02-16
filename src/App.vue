@@ -2,13 +2,17 @@
 import { isNullishCoalesce } from 'typescript';
 import GameGround from './components/GameGround.vue'
 import { ref } from 'vue';
-let count = ref(60);
+let count = ref(0);
 let intervalId;
 let isGamePlaying = false;
 let level = ref(1);
 
 // カウントが開始
 function startCount() {
+  if (count.value <= 0) {
+    alert("まずはレベルを選択してください！");
+    return;
+  }
   if (isGamePlaying === false) {
     isGamePlaying = true;
   }

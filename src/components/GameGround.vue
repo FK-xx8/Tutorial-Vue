@@ -40,7 +40,6 @@ const holes = ref([1,2,3,4,5]);
 
 .game-header {
   display: flex;
-  position: relative;
 }
 
 .scores {
@@ -52,10 +51,9 @@ const holes = ref([1,2,3,4,5]);
 }
 
 .time {
-  /* 研修中に完全に理解できたわけではなかった、postion:relative;とposition:fixed;の理解ができるようになった */
-  position: fixed;
+  position: relative;
   /* 下記2つで親要素内の中央に寄せることができるらしい */
-  left: 50%;
+  left: 30%;
   transform: translate(-50%);
   color: white;
   font-size: 4em;
